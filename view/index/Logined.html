@@ -1,0 +1,45 @@
+<script>
+function SetIndexTable(obj, item){
+	var tmp = '';
+	var to;
+	if(obj.length != 0){
+		for(var i = 0; i < obj.length; i++){
+			tmp += "<tr><td>"+obj[i].seq+"</td><td>"+obj[i].title+"</td><td>"+obj[i].audit_date+"</td><td>[<span onclick = \"PageChange('news/NewsEdit?seq="+obj[i].seq+"');\" class = 'link'>Edit</span>][<span onclick = \"PageChange('news/NewsView?seq="+obj[i].seq+"');\" class = 'link'>View</span>]</td></tr>";
+		}
+	}else{
+		tmp += "<tr><td></td><td>無資料</td><td></td><td></td></tr>";
+	}
+	item.find('div').html("<table style = 'width:100%;'><thead><tr><td></td><td >標題</td><td>審核日期</td><td>工具</td></tr></thead><tbody>"+tmp+"</tbody></table>");
+	item.find('div').find('table').dataTable(dataTableDef);
+	item.show();
+}
+$(window).ready(function(){
+	$('#IndexNewsList div, #IndexNewsPostList div, #IndexNewsNopassLise div, #IndexNewsNoseeLise div, #IndexNewsDraftList div').css({'width':'90%','margin-left':'10%'});
+
+	$('#IndexNewsList, #IndexNewsPostList, #IndexNewsNopassLise, #IndexNewsNoseeLise, #IndexNewsDraftList').css({'border-left':'1px solid #000000','border-bottom':'1px solid #000000','margin-bottom':'2%'});
+});
+</script>
+<div id = 'IndexNewsList' hidden>
+	已發佈文章(<span class = 'NewsListCount'></span>)
+	<div></div>
+</div>
+
+<div id = 'IndexNewsPostList' hidden>
+	已通過的稿件(<span class = 'NewsPostListCount'></span>)
+	<div></div>
+</div>
+
+<div id = 'IndexNewsNopassLise' hidden>
+	未通過的稿件(<span class = 'NewsNopassLiseCount'></span>)
+	<div></div>
+</div>
+
+<div id = 'IndexNewsNoseeLise' hidden>
+	待審核的稿件(<span class = 'NewsNoseeLiseCount'></span>)
+	<div></div>
+</div>
+
+<div id = 'IndexNewsDraftList' hidden>
+	草稿夾(<span class = 'NewsDraftListCount'></span>)
+	<div></div>
+</div>

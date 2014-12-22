@@ -1,0 +1,55 @@
+body {
+	font-size: 1em;
+	text-align: center;
+	margin:0;
+}
+.side {
+	width:10%;
+	left:1%;
+	line-height: 1.5em;
+	display: inline-block;
+	vertical-align: top;
+}
+.list span {
+    padding-left: 1em;
+}
+.BodyMain {
+	/*position:absolute;*/
+	display: inline-block;
+	left:11%;
+	width:89%;
+}
+#BodyForm {
+	width:100%;
+	text-align: left;
+	display:inline-block;
+}
+#hender {
+	text-align:right;
+	margin-bottom: 0.3em;
+	background-color:#00ff00;
+	font-size:3em;
+}
+#footer {
+	text-align:right;
+	height:30%;
+	background-color:#00ff00;
+	font-size:3em;
+}
+
+.link{
+	cursor:pointer;
+	text-decoration:none;
+	color: #0000ff;
+}
+
+.div_table{
+	display:table;
+	width:100%;
+}
+.div_table_tr{
+	display: table-row;
+}
+.div_table_td{
+	display: table-cell;
+}

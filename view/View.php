@@ -1,0 +1,94 @@
+<?php
+class View {
+	private $isPw = false;
+	function __construct($page, $InData) {
+		$OnlyBody = $InData['OnlyBody'];
+		if(isset($InData['OnlyBody']))
+			unset($InData['OnlyBody']);
+		$NoSide = !isset($InData['NoSide']);
+		if(isset($InData['NoSide']))
+			unset($InData['NoSide']);
+		if($OnlyBody){
+			include_once 'hend.html';
+			include_once 'body_hend.html';
+		}
+		if(isset($_SESSION['user']['UserId']) and $NoSide){
+			include 'side.php';
+			echo "<div class = 'BodyMain'>";
+			// print_r($_SESSION);
+		}
+		include_once "view/$page.html";
+		if(isset($_SESSION['user']['UserId']) and $NoSide){
+			echo "</div>";
+		}
+		if($this->getBody('view/'.$page.'.html')){
+			echo $this->PwEnCode();
+		}
+		if($OnlyBody)
+			include_once 'foot.html';
+	}
+	public function PwEnCode(){
+		$re_arr = array();
+		for($i = 33; $i <=126; $i++){
+			$t = urlencode(chr(rand(33,126)));
+			if(!in_array($t,$re_arr))
+				$re_arr[urlencode(chr($i))] = $t;
+			else
+				$i-=1;
+		}
+		$tmp=array();
+		foreach($re_arr as $key => $value){
+			$tmp[] = array('id'=>$key, 'val'=>$value);
+		}
+		if(!isset($_SESSION))
+			session_start ();
+		$_SESSION['PwEnCode']=$tmp;
+		$tmp = array();
+		$_SESSION['PwHand'] = rand(3,5);
+		for($i = 1; $i<= $_SESSION['PwHand'];$i++){
+			$tmp[] = chr(rand(65,90));
+		}
+		$_SESSION['PwHand'] = implode($tmp).'::';
+		return "
+<script>
+	var pwEnCode = ".json_encode($_SESSION['PwEnCode']).";
+	$('input').change(function(){
+		if($(this)[0].type == 'password'){
+			var tmp = '';
+			for(var i = 0; i < $(this).val().length; i++){
+				var str = $(this).val()[i];
+				if(str == '/' || str == '@' || str == '+')
+					str = encodeURIComponent(str);
+				else
+					str = escape(str);
+				if(str == '*')
+					str ='%2A';
+				for(var j = 0; j < pwEnCode.length; j++){
+					if(str == pwEnCode[j].id){
+						if(tmp != '')
+							tmp += '*|*';
+						tmp += pwEnCode[j].val;
+					}
+				}
+			}
+			this.value = '".$_SESSION['PwHand']."'+tmp;
+		}
+	});
+</script>";
+	}
+	private function getBody($filename){
+		$re=false;
+		if(file_exists($filename)){
+			$file = fopen($filename, "r");
+			if($file != NULL){
+				while (!feof($file)) {
+					if(stristr (fgets($file),'password')){
+						$re = true;
+					}
+				}
+				fclose($file);
+			}
+		}
+		return $re;
+	}
+}

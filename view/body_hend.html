@@ -1,0 +1,19 @@
+		<div id = 'BodyForm'>
+			<div id = 'hender'>
+<?php
+	//print_r($_SESSION);
+	if(file_exists('lib/Config.php')){
+?>
+				[<span id = 'goIndex' class = 'link'><span class = 'Lang_goIndex'></span></span>]
+<?php
+		if(!isset($_SESSION['user']['UserId'])){
+			echo "\t\t\t\t[<span id = 'login' class = 'link'><span class = 'Lang_login'></span></span>]\n";
+		}else{
+			echo "\t\t\t\t[<span id = 'logout' class = 'link'><span class = 'Lang_logout'></span></span>]\n";
+		}
+	}else{
+		echo "\t\t\t\t<div style='text-align:center'><span class = 'Lang_InstallInfo'></span></div>\n";
+	}
+?>
+		</div>
+		<div id = 'BodyMain'>
